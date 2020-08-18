@@ -1,3 +1,20 @@
 <resources>
-    <string name="app_name">PlantStore</string>
+    <string name="app_name">MyWay</string>
+    <string name="textview">TextView</string>
+
+    <string name="cart">Cart</string>
+    <string name="_50">50</string>
+    <string name="buy_now">Купить сейчас</string>
+    <string name="ux_design">UX-Дизайн</string>
+    <string name="_17k">17k</string>
+    <string name="_4_2">4.2</string>
+    <string name="hey_rajendra">Првет Абдулло</string>
+    <string name="find_a_course_you_want_to_learn">Найдите курс, который вы хотите изучить</string>
+    <string name="categories">Категории</string>
+    <string name="see_all">Видеть всех</string>
+    <string name="marketing">Маркетинг</string>
+    <string name="_17">17</string>
+    <string name="courses">Курсы</string>
+    <string name="_5_35_mins">5.35 мин</string>
+    <string name="welcome_to_the_course">Добро пожаловать на онлайн курс</string>
 </resources>

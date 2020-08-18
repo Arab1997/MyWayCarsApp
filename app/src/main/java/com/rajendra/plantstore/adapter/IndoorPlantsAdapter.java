@@ -36,7 +36,7 @@ public class IndoorPlantsAdapter extends RecyclerView.Adapter<IndoorPlantsAdapte
     @NonNull
     @Override
     public IndoorPlantViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.indoor_row_items, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
         return new IndoorPlantViewHolder(view);
     }
 
@@ -44,7 +44,7 @@ public class IndoorPlantsAdapter extends RecyclerView.Adapter<IndoorPlantsAdapte
     public void onBindViewHolder(@NonNull final IndoorPlantViewHolder holder, final int position) {
 
         holder.plantName.setText(recommendedList.get(position).getName());
-        holder.plantPrice.setText("₹ " + recommendedList.get(position).getPrice());
+        holder.plantPrice.setText("&+$ " + recommendedList.get(position).getPrice());
 
 
         // for image we need to add dependency for fetching image from network
@@ -102,9 +102,9 @@ public class IndoorPlantsAdapter extends RecyclerView.Adapter<IndoorPlantsAdapte
         public IndoorPlantViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            plantImage = itemView.findViewById(R.id.plant_image);
-            plantName = itemView.findViewById(R.id.name);
-            plantPrice = itemView.findViewById(R.id.plant_price);
+            plantImage = itemView.findViewById(R.id.item_movie_img);
+            plantName = itemView.findViewById(R.id.item_movie_title);
+          //  plantPrice = itemView.findViewById(R.id.plant_price);
 
         }
     }
