@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     private PotsAdapter potsAdapter;
     private Movie movieAdapter;
 
-
     public MainActivity() {
     }
 
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
        initWeekCars();
        initWeekCarsTop();
-        initPopularCars();
+       // initPopularCars();
 
 /*
         anInterface = RetrofitClient.getRetrofitInstance().create(ApiInterface.class);
