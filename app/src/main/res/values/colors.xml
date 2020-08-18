@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#9C3C3C</color>
-    <color name="colorPrimaryDark">#9C3C3C</color>
-    <color name="colorAccent">#9C3C3C</color>
+    <color name="colorPrimary">#21425d</color>
+    <color name="colorPrimaryDark">#6c000000</color>
+    <color name="colorAccent">#6c000000</color>
+
+
+
+
+
+    <color name="colorPrimaryB">#2196F3</color>
+    <color name="colorPrimaryDarkB">#2196F3</color>
+    <color name="colorAccentB">#2196F3</color>
+
+    <color name="list_background">#FFFFFF</color>
+    <color name="list_divider">#D9D9D9</color>
 
     <!-- Indigo 500 -->
     <color name="primary_500">#3F51B5</color>

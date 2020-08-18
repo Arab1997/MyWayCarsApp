@@ -1,27 +1,36 @@
 package com.rajendra.plantstore;
 
+import android.annotation.SuppressLint;
+import android.app.ActivityOptions;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Color;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ExpandableListView;
+import android.widget.ImageView;
+
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import android.app.ActivityOptions;
-import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.Toast;
-
-import com.rajendra.plantstore.adapter.IndoorPlantsAdapter;
-import com.rajendra.plantstore.adapter.PotsAdapter;
+import com.google.android.material.navigation.NavigationView;
 import com.rajendra.plantstore.retrofit.ApiInterface;
+import com.rajendra.plantstore.utils.ChildModel;
+import com.rajendra.plantstore.utils.Common;
 import com.rajendra.plantstore.utils.DataSource;
+import com.rajendra.plantstore.utils.HeaderModel;
+import com.rajendra.plantstore.utils.NavigationListView;
 import com.rajendra.plantstore.utils.adapters.MovieAdapter;
 import com.rajendra.plantstore.utils.adapters.MovieAdapter2;
 import com.rajendra.plantstore.utils.adapters.MovieItemClickListener;
@@ -31,84 +40,134 @@ import com.rajendra.plantstore.utils.models.Slide;
 import java.util.List;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements MovieItemClickListener {
+public class MainActivity extends AppCompatActivity implements MovieItemClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     private List<Slide> lstSlides;
     private ViewPager sliderpager;
     //private TabLayout indicator;
     private RecyclerView MoviesRV, moviesRvWeek;
 
+
+    private DrawerLayout drawer;
+    private ActionBarDrawerToggle toggle;
+    private NavigationView navigationView;
+    private NavigationListView listView;
+    private Context context;
+
     ApiInterface anInterface;
     private RecyclerView plantRecyclerView, potRecyclerView;
-    private IndoorPlantsAdapter indoorPlantsAdapter;
-    private PotsAdapter potsAdapter;
-    private Movie movieAdapter;
 
     public MainActivity() {
     }
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-       /* initViews();
-        initSlider();*/
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(this, drawer, R.string.drawer_open, R.string.drawer_close);
+        toggle.setDrawerIndicatorEnabled(true);
+        drawer.setDrawerListener(toggle);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
-       initWeekCars();
-       initWeekCarsTop();
-       // initPopularCars();
+        initWeekCars();
+        initWeekCarsTop();
+        // initPopularCars();
 
-/*
-        anInterface = RetrofitClient.getRetrofitInstance().create(ApiInterface.class);
+        context = MainActivity.this;
+        listView = findViewById(R.id.expandable_navigation);
 
-        Call<List<IndoorPlant>> call = anInterface.getAllPlants();
-        call.enqueue(new Callback<List<IndoorPlant>>() {
-            @Override
-            public void onResponse(Call<List<IndoorPlant>> call, Response<List<IndoorPlant>> response) {
+        drawer = findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(
+                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
-                List<IndoorPlant> s = response.body();
-                Log.d("data", s.toString());
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
-                // here you can see we have successfully fetched data from server
-                // now we need to set this data to recyclerview adapter.
+        listView.init(this)
+                .addHeaderModel(new HeaderModel("Домой"))
+                .addHeaderModel(new HeaderModel("Шоурум", R.drawable.ic_cardbackgroud, true, true, false, Color.WHITE))
+                .addHeaderModel(
+                        new HeaderModel("Катигории", -1, true)
+                                .addChildModel(new ChildModel("Men's Fashion"))
+                                .addChildModel(new ChildModel("Woman's Fashion"))
+                                .addChildModel(new ChildModel("Babies and Family"))
+                                .addChildModel(new ChildModel("Health"))
+                )
+                .addHeaderModel(new HeaderModel("Orders"))
+                .addHeaderModel(new HeaderModel("Wishlist"))
+                .addHeaderModel(new HeaderModel("Notifications"))
+                .build()
+                .addOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+                    @Override
+                    public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                        listView.setSelected(groupPosition);
 
-                getPlants(s.get(0).getRecommended());
-                //lets run
-                //i think my internet is too slow
-                //wait
-                getPots(s.get(0).getPots());
+                        //drawer.closeDrawer(GravityCompat.START);
+                        if (id == 0) {
+                            //Home Menu
+                            Common.showToast(context, "Home Select");
 
-                //its done.
+                            drawer.closeDrawer(GravityCompat.START);
+                        } else if (id == 1) {
+                            //Cart Menu
+                            Common.showToast(context, "Cart Select");
+                            drawer.closeDrawer(GravityCompat.START);
+                        } /*else if (id == 2) {
+                            //Categories Menu
+                            Common.showToast(context, "Categories  Select");
+                        }*/ else if (id == 3) {
+                            //Orders Menu
+                            Common.showToast(context, "Orders");
+                            drawer.closeDrawer(GravityCompat.START);
+                        } else if (id == 4) {
+                            //Wishlist Menu
+                            Common.showToast(context, "Wishlist Selected");
+                            drawer.closeDrawer(GravityCompat.START);
+                        } else if (id == 5) {
+                            //Notifications Menu
+                            Common.showToast(context, "Notifications");
+                            drawer.closeDrawer(GravityCompat.START);
+                        }
+                        return false;
+                    }
+                })
+                .addOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                    @Override
+                    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                        listView.setSelected(groupPosition, childPosition);
+                        if (id == 0) {
+                            Common.showToast(context, "Man's Fashion");
+                        } else if (id == 1) {
+                            Common.showToast(context, "Woman's Fashion");
+                        } else if (id == 2) {
+                            Common.showToast(context, "Babies and Family");
+                        } else if (id == 3) {
+                            Common.showToast(context, "Health");
+                        }
 
-            }
-
-            @Override
-            public void onFailure(Call<List<IndoorPlant>> call, Throwable t) {
-
-            }
-        });*/
+                        drawer.closeDrawer(GravityCompat.START);
+                        return false;
+                    }
+                });
+        //listView.expandGroup(2);
 
     }
- /*   private  void getPlants(List<Recommended> recommendedList){
 
-        plantRecyclerView = findViewById(R.id.plant_recycler);
-        indoorPlantsAdapter = new IndoorPlantsAdapter(this, recommendedList);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        plantRecyclerView.setLayoutManager(layoutManager);
-        plantRecyclerView.setAdapter(indoorPlantsAdapter);
-    }
 
-    private  void getPots(List<Pot> potList){
 
-        potRecyclerView = findViewById(R.id.pot_recycler);
-        potsAdapter = new PotsAdapter(this, potList);
-        //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),2);
-        gridLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        potRecyclerView.setLayoutManager(gridLayoutManager);
-        potRecyclerView.setAdapter(potsAdapter);
-    }*/
 
 //--------------------------------------//      //-----------------------------------------//
 
@@ -120,9 +179,10 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         plantRecyclerView.setAdapter(movieAdapter);
 
     }
+
     private void initWeekCars() {
         potRecyclerView = findViewById(R.id.pot_recycler);
-        MovieAdapter2 movieAdapter2 = new MovieAdapter2(this, DataSource.getWeekCars(),  this);
+        MovieAdapter2 movieAdapter2 = new MovieAdapter2(this, DataSource.getWeekCars(), this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         potRecyclerView.setLayoutManager(layoutManager);
         potRecyclerView.setAdapter(movieAdapter2);
@@ -152,6 +212,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         startActivity(intent, options.toBundle());
 
     }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onListClick(Movie movie, ImageView carImageView) {
@@ -182,33 +243,118 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     }
 
 
-   /* public boolean onNavigationItemSelected(MenuItem item) {
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        mDrawerLayout.closeDrawers();
 
-        if (id == R.id.nav_login) {
-            if (mIsLoggedin) {
-                logout();
-            } else {
-                mFragmentTransaction = mFragmentManager.beginTransaction();
-                mFragmentTransaction.replace(R.id.fragment_container, new LoginFragment()).commit();
-            }
-            }
+     /*   int id = item.getItemId();
+        if (id == R.id.cart)
+            //noinspection SimplifiableIfStatement
+            if (id == R.id.action_search) {
+                return true;
             }
 
+        return super.onOptionsItemSelected(item);
+    }
+
+*/
 
 
-    Spinner spinner = (Spinner) navigationView.getMenu().findItem(R.id.navigation_drawer_item3).getActionView();
-    spinner.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,language));
-    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            Toast.makeText(MainActivity.this,language[position],Toast.LENGTH_SHORT).show();
+        switch (id) {
+            case R.id.action_settings:
+                Intent intent = new Intent(this, PlantDetails.class);
+                startActivity(intent);
+
+                break;
+
+            case R.id.action_search:
+                Intent menu = new Intent(this, MainActivity.class);
+                startActivity(menu);
+
+                break;
         }
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-        }
-    });*/
 
+        //return super.onOptionsItemSelected(item);
+
+        return toggle != null && toggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+    }
+
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+       /* if (id == R.id.nav_camera) {
+            // Handle the camera action
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }*/
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+
+   /* @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return toggle != null && toggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+    }*/
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        if (toggle != null)
+            toggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (toggle != null)
+            toggle.onConfigurationChanged(newConfig);
+    }
+
+
+
+   /* @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+// Sync the toggle state after onRestoreInstanceState has occurred.
+        mActionBarDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mActionBarDrawerToggle.onConfigurationChanged(newConfig);
+    }*/
 }
 
