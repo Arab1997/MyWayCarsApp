@@ -9,7 +9,7 @@
     android:layout_marginStart="6dp"
     android:layout_marginTop="6dp"
     android:layout_marginEnd="5dp"
-    android:background="@drawable/button_bg2"
+
     app:cardCornerRadius="6dp"
     app:layout_constraintEnd_toStartOf="@+id/cardView3"
     app:layout_constraintHorizontal_bias="0.5"
@@ -21,7 +21,6 @@
         android:layout_height="match_parent"
         android:clickable="true"
         android:focusable="true"
-        android:background="@drawable/button_bg2"
         android:foreground="?attr/selectableItemBackgroundBorderless">
 
 
