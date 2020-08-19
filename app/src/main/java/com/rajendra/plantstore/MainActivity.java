@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                             Common.showToast(context, "Categories  Select");
                         }*/ else if (id == 3) {
                             //Orders Menu
-                            Common.showToast(context, "Orders");
+                            Common.showToast(context, "Заказы");
                             drawer.closeDrawer(GravityCompat.START);
                         } else if (id == 4) {
                             //Wishlist Menu
@@ -281,7 +281,6 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     }
 
 */
-
 
         switch (id) {
             case R.id.action_settings:
