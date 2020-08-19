@@ -31,6 +31,7 @@ import com.rajendra.plantstore.utils.Common;
 import com.rajendra.plantstore.utils.DataSource;
 import com.rajendra.plantstore.utils.HeaderModel;
 import com.rajendra.plantstore.utils.NavigationListView;
+import com.rajendra.plantstore.utils.adapters.CarsItemClickListener;
 import com.rajendra.plantstore.utils.adapters.MovieAdapter;
 import com.rajendra.plantstore.utils.adapters.MovieAdapter2;
 import com.rajendra.plantstore.utils.adapters.MovieItemClickListener;
@@ -40,7 +41,7 @@ import com.rajendra.plantstore.utils.models.Slide;
 import java.util.List;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements MovieItemClickListener, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements MovieItemClickListener, NavigationView.OnNavigationItemSelectedListener, CarsItemClickListener {
 
     private List<Slide> lstSlides;
     private ViewPager sliderpager;
@@ -98,7 +99,8 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
         listView.init(this)
                 .addHeaderModel(new HeaderModel("Домой"))
-                .addHeaderModel(new HeaderModel("Шоурум", R.drawable.ic_cardbackgroud, true, true, false, Color.WHITE))
+               // .addHeaderModel(new HeaderModel("Шоурум", R.drawable.ic_cardbackgroud, true, true, false, Color.WHITE))
+                .addHeaderModel(new HeaderModel("Шоурум"))
                 .addHeaderModel(
                         new HeaderModel("Tип кузова" , -1, true)
                                 .addChildModel(new ChildModel("Седан"))
@@ -113,8 +115,9 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                                 .addChildModel(new ChildModel("Лимузин"))
                 )
                 .addHeaderModel(new HeaderModel("Наши марки"))
-                .addHeaderModel(new HeaderModel("Wishlist"))
-                .addHeaderModel(new HeaderModel("Notifications"))
+                .addHeaderModel(new HeaderModel("Список желаний"))
+                .addHeaderModel(new HeaderModel("Уведомления"))
+                .addHeaderModel(new HeaderModel("Настройки"))
                 .build()
                 .addOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
                     @Override
@@ -124,12 +127,12 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                         //drawer.closeDrawer(GravityCompat.START);
                         if (id == 0) {
                             //Home Menu
-                            Common.showToast(context, "Home Select");
+                            Common.showToast(context, "Домой");
 
                             drawer.closeDrawer(GravityCompat.START);
                         } else if (id == 1) {
                             //Cart Menu
-                            Common.showToast(context, "Cart Select");
+                            Common.showToast(context, "Шоурум");
                             drawer.closeDrawer(GravityCompat.START);
                         } /*else if (id == 2) {
                             //Categories Menu
@@ -140,11 +143,15 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                             drawer.closeDrawer(GravityCompat.START);
                         } else if (id == 4) {
                             //Wishlist Menu
-                            Common.showToast(context, "Wishlist Selected");
+                            Common.showToast(context, "Список желаний");
                             drawer.closeDrawer(GravityCompat.START);
                         } else if (id == 5) {
                             //Notifications Menu
-                            Common.showToast(context, "Notifications");
+                            Common.showToast(context, "Уведомления");
+                            drawer.closeDrawer(GravityCompat.START);
+                        } else if (id == 6) {
+                            //Notifications Menu
+                            Common.showToast(context, "Настройки");
                             drawer.closeDrawer(GravityCompat.START);
                         }
                         return false;
@@ -186,6 +193,15 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
     }
 
+
+    private void initWeekCarsTop() {
+        plantRecyclerView = findViewById(R.id.plant_recycler);
+        MovieAdapter movieAdapter = new MovieAdapter(this, DataSource.getCars(), this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        plantRecyclerView.setLayoutManager(layoutManager);
+        plantRecyclerView.setAdapter(movieAdapter);
+    }
+
     private void initWeekCars() {
         potRecyclerView = findViewById(R.id.pot_recycler);
         MovieAdapter2 movieAdapter2 = new MovieAdapter2(this, DataSource.getWeekCars(), this);
@@ -195,13 +211,6 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
     }
 
-    private void initWeekCarsTop() {
-        plantRecyclerView = findViewById(R.id.plant_recycler);
-        MovieAdapter movieAdapter = new MovieAdapter(this, DataSource.getCars(), this);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        plantRecyclerView.setLayoutManager(layoutManager);
-        plantRecyclerView.setAdapter(movieAdapter);
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -232,6 +241,8 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         startActivity(intent, options.toBundle());
 
     }
+
+
 
     class SliderTimer extends TimerTask {
         @Override
