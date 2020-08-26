@@ -3,11 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
     android:orientation="vertical">
 
     <HorizontalScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:scrollbars="none">
 
         <LinearLayout
@@ -16,16 +18,16 @@
             android:orientation="horizontal">
 
             <androidx.cardview.widget.CardView
-                android:layout_width="208dp"
-                android:layout_height="251dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 app:cardCornerRadius="4dp"
                 app:cardElevation="4dp"
                 app:cardUseCompatPadding="true"
                 app:contentPadding="6dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="173dp"
+                    android:layout_height="225dp"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -124,8 +126,8 @@
 
                     <ImageView
                         android:id="@+id/item_movie_img"
-                        android:layout_width="181dp"
-                        android:layout_height="115dp"
+                        android:layout_width="170dp"
+                        android:layout_height="125dp"
                         android:layout_marginBottom="3dp"
                         android:src="@drawable/bmw_car_img" />
 
@@ -161,16 +163,16 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="104dp"
-                            android:layout_height="22dp"
+                            android:layout_width="103dp"
+                            android:layout_height="wrap_content"
                             android:layout_alignTop="@+id/textView"
                             android:layout_alignBottom="@+id/textView"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
                             android:layout_marginStart="21dp"
                             android:layout_marginTop="-3dp"
-                            android:layout_marginEnd="3dp"
-                            android:layout_marginRight="3dp"
+                            android:layout_marginEnd="9dp"
+                            android:layout_marginRight="9dp"
                             android:layout_marginBottom="-1dp"
                             android:layout_toEndOf="@+id/textView"
                             android:background="@drawable/blue_rounded_shape"

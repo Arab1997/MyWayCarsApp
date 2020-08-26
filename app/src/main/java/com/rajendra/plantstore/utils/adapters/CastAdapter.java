@@ -69,7 +69,7 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastViewHolder
         public CastViewHolder(@NonNull View itemView) {
 
             super(itemView);
-           // img = itemView.findViewById(R.id.img_cast);
+            img = itemView.findViewById(R.id.item_movie_img);
 
           /*  itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

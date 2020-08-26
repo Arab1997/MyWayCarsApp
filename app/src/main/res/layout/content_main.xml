@@ -24,30 +24,26 @@
         app:tabTextColor="#9ea1b0"
         tools:ignore="MissingConstraints">
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Merc" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cars" />
+            android:text="мерседес" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Trucks" />
+            android:text="BMW" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Scooters" />
+            android:text="ламбо" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Helicopters" />
+            android:text="Порше" />
 
     </com.google.android.material.tabs.TabLayout>
 
