@@ -19,13 +19,13 @@ public class MovieAdapter2 extends RecyclerView.Adapter<MovieAdapter2.MyViewHold
 
    private Context context ;
     private  List<Movie> mData;
-    private  CarsItemClickListener carsItemClickListener;
+    private  MovieItemClickListener movieItemClickListener;
 
 
-    public MovieAdapter2(Context context, List<Movie> mData, CarsItemClickListener listener) {
+    public MovieAdapter2(Context context, List<Movie> mData, MovieItemClickListener listener) {
         this.context = context;
         this.mData = mData;
-        carsItemClickListener = listener;
+        movieItemClickListener = listener;
     }
 
 
@@ -72,7 +72,7 @@ public class MovieAdapter2 extends RecyclerView.Adapter<MovieAdapter2.MyViewHold
                 @Override
                 public void onClick(View v) {
 
-                    carsItemClickListener.onMovieClick(mData.get(getAdapterPosition()),ImgMovie);
+                    movieItemClickListener.onMovieClick(mData.get(getAdapterPosition()),ImgMovie);
 
                 }
             });

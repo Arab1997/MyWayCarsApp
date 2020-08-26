@@ -35,7 +35,7 @@ public class MovieAdapter3 extends RecyclerView.Adapter<MovieAdapter3.MyViewHold
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
 
-        View view = LayoutInflater.from(context).inflate(R.layout.item_movie2,viewGroup,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_movie,viewGroup,false);
         return new MyViewHolder(view);
 
 
@@ -73,7 +73,7 @@ public class MovieAdapter3 extends RecyclerView.Adapter<MovieAdapter3.MyViewHold
                 @Override
                 public void onClick(View v) {
 
-                   // movieItemClickListener.onMovieClick(mData.get(getAdapterPosition()),ImgMovie);
+                movieItemClickListener.onMovieClick(mData.get(getAdapterPosition()),ImgMovie);
 
                     Toast.makeText(itemView.getContext(), "test", Toast.LENGTH_SHORT).show();
                 }

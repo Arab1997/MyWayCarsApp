@@ -34,6 +34,7 @@ import com.rajendra.plantstore.utils.NavigationListView;
 import com.rajendra.plantstore.utils.adapters.CarsItemClickListener;
 import com.rajendra.plantstore.utils.adapters.MovieAdapter;
 import com.rajendra.plantstore.utils.adapters.MovieAdapter2;
+import com.rajendra.plantstore.utils.adapters.MovieAdapter3;
 import com.rajendra.plantstore.utils.adapters.MovieItemClickListener;
 import com.rajendra.plantstore.utils.models.Movie;
 import com.rajendra.plantstore.utils.models.Slide;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     private Context context;
 
     ApiInterface anInterface;
-    private RecyclerView plantRecyclerView, potRecyclerView;
+    private RecyclerView plantRecyclerView, potRecyclerView, forYouRecyclerView;
 
     public MainActivity() {
     }
@@ -67,6 +68,26 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_main);
+        initWeekCars();
+        initWeekCarsTop();
+        initPopularCars();
+        findViewById();
+        menu();
+    }
+
+    private void findViewById() {
+
+        context = MainActivity.this;
+        listView = findViewById(R.id.expandable_navigation);
+
+        drawer = findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(
+                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -80,29 +101,16 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+    }
 
-        initWeekCars();
-        initWeekCarsTop();
-        // initPopularCars();
-
-        context = MainActivity.this;
-        listView = findViewById(R.id.expandable_navigation);
-
-        drawer = findViewById(R.id.drawer_layout);
-        toggle = new ActionBarDrawerToggle(
-                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+    private void menu() {
 
         listView.init(this)
                 .addHeaderModel(new HeaderModel("Домой"))
-               // .addHeaderModel(new HeaderModel("Шоурум", R.drawable.ic_cardbackgroud, true, true, false, Color.WHITE))
+                // .addHeaderModel(new HeaderModel("Шоурум", R.drawable.ic_cardbackgroud, true, true, false, Color.WHITE))
                 .addHeaderModel(new HeaderModel("Шоурум"))
                 .addHeaderModel(
-                        new HeaderModel("Tип кузова" , -1, true)
+                        new HeaderModel("Tип кузова", -1, true)
                                 .addChildModel(new ChildModel("Седан"))
                                 .addChildModel(new ChildModel("Хэтчбек"))
                                 .addChildModel(new ChildModel("Минивен"))
@@ -176,22 +184,10 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                     }
                 });
         //listView.expandGroup(2);
-
     }
-
-
 
 
 //--------------------------------------//      //-----------------------------------------//
-
-    private void initPopularCars() {
-        plantRecyclerView = findViewById(R.id.plant_recycler);
-        MovieAdapter movieAdapter = new MovieAdapter(this, DataSource.getPopularCars(), this);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        plantRecyclerView.setLayoutManager(layoutManager);
-        plantRecyclerView.setAdapter(movieAdapter);
-
-    }
 
 
     private void initWeekCarsTop() {
@@ -211,6 +207,14 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
     }
 
+    private void initPopularCars() {
+        forYouRecyclerView = findViewById(R.id.for_you_recycler);
+        MovieAdapter3 movieAdapter3 = new MovieAdapter3(this, DataSource.getPopularCars(), this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        forYouRecyclerView.setLayoutManager(layoutManager);
+        forYouRecyclerView.setAdapter(movieAdapter3);
+
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -241,7 +245,6 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         startActivity(intent, options.toBundle());
 
     }
-
 
 
     class SliderTimer extends TimerTask {
